@@ -5,13 +5,21 @@ import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 
 
 //react
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import debounce from 'lodash.debounce';
-import { useSelector} from "react-redux";
+// import {useDispatch, useSelector} from "react-redux";
+import {useAppDispatch, useAppSelector} from "../../store.ts";
+import {fetchRows} from "../../slices/countries-slice.ts";
 
 export default function Countries() {
+    const dispatch = useAppDispatch();
     const [searchQuery, setSearchQuery] = useState('');
-    const rows = useSelector((state: any) => state.table.rows);
+    const { rows, loading, error } = useAppSelector((state) => state.table);
+
+    useEffect(() => {
+        dispatch(fetchRows()); // Fetch rows when the component mounts
+    }, [dispatch]);
+
     const handleSearch = useCallback(
         debounce((query: string) => {
             setSearchQuery(query);
@@ -23,7 +31,8 @@ export default function Countries() {
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
     return (
         <div className="content-countries">
             <SearchBar onSearch={handleSearch}/>

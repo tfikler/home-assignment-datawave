@@ -14,12 +14,16 @@ export default function EditDialog({open, handleClose, row_index} : {open: boole
     const [density, setDensity] = useState('');
 
     useEffect(() => {
-        setName(rows[row_index].name);
-        setCode(rows[row_index].code);
-        setPopulation(rows[row_index].population);
-        setSize(rows[row_index].size);
-        setDensity(rows[row_index].density);
-    }, [row_index]);
+        // Ensure row_index is valid before accessing rows[row_index]
+        if (rows[row_index]) {
+            const row = rows[row_index];
+            setName(row.name || '');
+            setCode(row.code || '');
+            setPopulation(row.population || 0);
+            setSize(row.size || 0);
+            setDensity(row.density || 0);
+        }
+    }, [row_index, rows]);
 
 
     const handleSave = () => {

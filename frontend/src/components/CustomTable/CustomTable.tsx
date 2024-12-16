@@ -17,6 +17,7 @@ export default function CustomTable({rows} : {rows: any[]}) {
 
 
 
+
     const columns = [
         { id: 'name', label: 'Name', minWidth: 170 },
         { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
