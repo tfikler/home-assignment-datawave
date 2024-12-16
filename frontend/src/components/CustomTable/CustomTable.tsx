@@ -3,26 +3,19 @@ import './CustomTable.css';
 
 //react
 import {Table, Paper, TableBody, TableContainer, TableHead, TableRow, TableCell} from '@mui/material';
+import {useState} from "react";
+import EditDialog from "../EditDialog/EditDialog.tsx";
+import {deleteRow} from "../../slices/countries-slice.ts";
+import {useDispatch} from "react-redux";
 
-export default function CustomTable() {
-    // const [rows, setRows] = useState([]);
+export default function CustomTable({rows} : {rows: any[]}) {
+    const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     fetch('https://restcountries.com/v3.1/all')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setRows(data);
-    //         });
-    // }, []);
-    const rows = [
-        { name: 'India', code: 'IN', population: 1324171354, size: 3287263, density: 403 },
-        { name: 'China', code: 'CN', population: 1403500365, size: 9596961, density: 147 },
-        { name: 'Italy', code: 'IT', population: 60483973, size: 301340, density: 201 },
-        { name: 'United States', code: 'US', population: 331449281, size: 9833520, density: 34 },
-        { name: 'Canada', code: 'CA', population: 38520851, size: 9976140, density: 4 },
-        { name: 'Australia', code: 'AU', population: 25268912, size: 7692024, density: 3 },
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [rowActionIndex, setRowActionIndex] = useState(0);
 
-    ]
+
+
 
     const columns = [
         { id: 'name', label: 'Name', minWidth: 170 },
@@ -31,23 +24,16 @@ export default function CustomTable() {
             id: 'population',
             label: 'Population',
             minWidth: 170,
-            align: 'right',
+            align: 'center',
             format: (value: number) => value.toLocaleString('en-US'),
         },
         {
             id: 'size',
             label: 'Size\u00a0(km\u00b2)',
             minWidth: 170,
-            align: 'right',
+            align: 'center',
             format: (value: number) => value.toLocaleString('en-US'),
-        },
-        {
-            id: 'density',
-            label: 'Density',
-            minWidth: 170,
-            align: 'right',
-            format: (value: number) => value.toFixed(2),
-        },
+        }
     ];
     return (
         <Paper className="paper">
@@ -63,10 +49,13 @@ export default function CustomTable() {
                                     {column.label}
                                 </TableCell>
                             ))}
+                            <TableCell key={"actions"} style={{ minWidth: 170, textAlign: "center"}}>
+                                Actions
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => {
+                        {rows.map((row, index) => {
                                 return (
                                     <TableRow tabIndex={-1} key={row.code}>
                                         {columns.map((column) => {
@@ -77,12 +66,29 @@ export default function CustomTable() {
                                                 </TableCell>
                                             );
                                         })}
+                                        <TableCell key={"actions"} className="actions">
+                                            <button className="edit-button"
+                                                    onClick={()=>{
+                                                        setIsEditDialogOpen(true);
+                                                        setRowActionIndex(index)
+                                                    }}>
+                                                Edit</button>
+                                            <button className="delete-button"
+                                                onClick={()=>{
+                                                    dispatch(deleteRow({row_index: index}));
+                                                }}
+                                            >Delete</button>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}
                     </TableBody>
                 </Table>
             </TableContainer>
+            {<EditDialog open={isEditDialogOpen}
+                         handleClose={()=>{setIsEditDialogOpen(false)}}
+                         row_index={rowActionIndex}
+            />}
         </Paper>
     );
 }

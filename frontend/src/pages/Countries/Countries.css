@@ -1,0 +1,32 @@
+.content-countries {
+    padding: 20px;
+    justify-content: space-around;
+}
+.edit-button {
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 50%;
+;
+}
+
+.delete-button {
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 50%;
+}
+
+.actions {
+    display: flex !important;
+    align-items: center;
+    flex-direction: row;
+}

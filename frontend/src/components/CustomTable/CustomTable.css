@@ -1,12 +1,11 @@
 .table-container {
-    margin-top: 20px;
+    margin-top: 5px;
     margin-bottom: 20px;
     max-height: 90vh;
     left: 50%;
     transform: translateX(-50%);
     overflow-x: auto;
     overflow-y: auto;
-    width: 90%;
     border-collapse: collapse;
     border-spacing: 0;
     border: 1px solid #dfe1e5;
@@ -15,7 +14,6 @@
     background-color: #fff;
     display: block;
     position: relative;
-    z-index: 1;
 }
 .paper {
    align-items: center;
