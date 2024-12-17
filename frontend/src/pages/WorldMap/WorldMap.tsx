@@ -12,11 +12,17 @@ export default function WorldMap() {
     const { rows, loading, error } = useAppSelector((state) => state.table);
 
     useEffect(() => {
-        dispatch(fetchRows({ page: 1, limit: 5 }));
-    }, [dispatch, 1]);
+        dispatch(fetchRows({ page: -1, limit: 5 }));
+    }, [dispatch]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
+
+    // Access the data property of rows and filter out countries with no coordinates
+    const countries = rows?.filter((country: any) =>
+        country.lat !== null &&
+        country.lng !== null
+    ) || [];
 
     return (
         <div id="map">
@@ -28,7 +34,7 @@ export default function WorldMap() {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {rows?.data.map((country: any) => (
+                {countries.map((country: any) => (
                     <Marker key={country.code} position={[country.lat, country.lng]}>
                         <Popup>
                             <h3>{country.name}</h3>

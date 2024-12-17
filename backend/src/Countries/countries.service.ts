@@ -54,7 +54,10 @@ export class CountriesService implements OnModuleInit {
         }
     }
 
-    async findAll(page: number = 1, limit: number = 7) {
+    async findAll(page: number = 1, limit: number = 5) {
+        if (page === -1){
+            return await this.countryModel.findAll();
+        }
         const offset = (page - 1) * limit;
         const { rows: data, count: total } = await this.countryModel.findAndCountAll({
             offset,
