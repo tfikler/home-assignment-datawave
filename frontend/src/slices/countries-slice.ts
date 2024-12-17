@@ -17,6 +17,16 @@ export const fetchRows = createAsyncThunk(
     }
 );
 
+export const fetchAllCountries = createAsyncThunk(
+    'table/fetchAllCountries',
+    async () => {
+        const response = await axios.get<Country[]>(
+            `http://localhost:3000/countries?page=-1`
+        );
+        return response.data;
+    }
+);
+
 export const updateCountry = createAsyncThunk(
     'table/updateCountry',
     async ({ id, data }: { id: number; data: Partial<Country> }) => {
@@ -38,12 +48,14 @@ export const deleteCountry = createAsyncThunk(
 
 interface TableState {
     rows: PaginatedResponse<Country> | null;
+    allCountries: Country[];
     loading: boolean;
     error: string | null;
 }
 
 const initialState: TableState = {
     rows: null,
+    allCountries: [],
     loading: false,
     error: null,
 };
@@ -54,6 +66,7 @@ const tableSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            // Fetch paginated rows
             .addCase(fetchRows.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -66,7 +79,22 @@ const tableSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message || 'Failed to fetch data';
             })
+            // Fetch all countries
+            .addCase(fetchAllCountries.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchAllCountries.fulfilled, (state, action) => {
+                state.loading = false;
+                state.allCountries = action.payload;
+            })
+            .addCase(fetchAllCountries.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || 'Failed to fetch data';
+            })
+            // Update country
             .addCase(updateCountry.fulfilled, (state, action) => {
+                // Update in paginated data
                 if (state.rows?.data) {
                     const index = state.rows.data.findIndex(
                         (country) => country.id === action.payload.id
@@ -75,13 +103,26 @@ const tableSlice = createSlice({
                         state.rows.data[index] = action.payload;
                     }
                 }
+                // Update in all countries
+                const allIndex = state.allCountries.findIndex(
+                    (country) => country.id === action.payload.id
+                );
+                if (allIndex !== -1) {
+                    state.allCountries[allIndex] = action.payload;
+                }
             })
+            // Delete country
             .addCase(deleteCountry.fulfilled, (state, action) => {
+                // Remove from paginated data
                 if (state.rows?.data) {
                     state.rows.data = state.rows.data.filter(
                         (country) => country.id !== action.payload
                     );
                 }
+                // Remove from all countries
+                state.allCountries = state.allCountries.filter(
+                    (country) => country.id !== action.payload
+                );
             });
     },
 });

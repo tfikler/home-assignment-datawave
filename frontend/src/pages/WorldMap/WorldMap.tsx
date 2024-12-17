@@ -4,25 +4,35 @@ import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet'
 import './WorldMap.css';
 import {useAppDispatch, useAppSelector} from "../../store.ts";
 import {useEffect} from "react";
-import {fetchRows} from "../../slices/countries-slice.ts";
+import {fetchAllCountries} from "../../slices/countries-slice.ts";
+import {divIcon} from "leaflet";
 
 
 export default function WorldMap() {
     const dispatch = useAppDispatch();
-    const { rows, loading, error } = useAppSelector((state) => state.table);
+    const { allCountries, loading, error } = useAppSelector((state) => state.table);
 
     useEffect(() => {
-        dispatch(fetchRows({ page: -1, limit: 5 }));
+        dispatch(fetchAllCountries());
     }, [dispatch]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
     // Access the data property of rows and filter out countries with no coordinates
-    const countries = rows?.filter((country: any) =>
+    const countries = allCountries?.filter((country: any) =>
         country.lat !== null &&
         country.lng !== null
     ) || [];
+
+    const createFlagIcon = (flagUrl: string) => {
+        return divIcon({
+            className: 'custom-flag-icon',
+            html: `<img src="${flagUrl}" alt="flag" />`,
+            iconSize: [15, 15],  // width, height of the icon
+            iconAnchor: [15, 10]  // position the icon correctly
+        });
+    };
 
     return (
         <div id="map">
@@ -35,7 +45,7 @@ export default function WorldMap() {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {countries.map((country: any) => (
-                    <Marker key={country.code} position={[country.lat, country.lng]}>
+                    <Marker key={country.code} position={[country.lat, country.lng]} icon={createFlagIcon(country.flag)}>
                         <Popup>
                             <h3>{country.name}</h3>
                             <p>Population: {country.population}</p>
