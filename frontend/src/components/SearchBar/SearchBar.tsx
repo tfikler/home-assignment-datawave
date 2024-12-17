@@ -8,11 +8,13 @@ export default function SearchBar({ onSearch } : { onSearch: (search: string) =>
     };
 
     return (
+        <div className="search-bar">
             <input
-                className="search-bar"
                 type="text"
-                placeholder="Search"
+                placeholder="Search for a country"
                 onChange={handleInputChange}
+                style={{width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #fff', color: 'black', height: '30px'}}
             />
+        </div>
     );
 }
