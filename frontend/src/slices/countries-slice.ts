@@ -30,6 +30,7 @@ export const fetchAllCountries = createAsyncThunk(
 export const updateCountry = createAsyncThunk(
     'table/updateCountry',
     async ({ id, data }: { id: number; data: Partial<Country> }) => {
+        console.log(`before updating ${data}`)
         const response = await axios.put<Country>(
             `http://localhost:3000/countries/${id}`,
             data

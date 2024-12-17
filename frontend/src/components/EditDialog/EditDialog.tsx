@@ -77,14 +77,13 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
     const handleSave = () => {
         if (validateForm()) {
             const payload = {
-                id: countryId,  // Include the ID in the payload
                 ...formData,
                 population: formData.population ? Number(formData.population) : undefined,
                 size: formData.size ? Number(formData.size) : undefined,
                 density: formData.density ? Number(formData.density) : undefined,
             };
-
-            dispatch(updateCountry(payload));
+            console.log('Save', payload);
+            dispatch(updateCountry({ id: countryId, data: payload }));
             handleClose();
         }
     };
