@@ -1,7 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import {ensureDatabaseExists} from "./config/sequelize.config";
 
 async function bootstrap() {
+  await ensureDatabaseExists();
+
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin: '*', // Allow all origins

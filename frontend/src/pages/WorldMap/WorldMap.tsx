@@ -12,8 +12,8 @@ export default function WorldMap() {
     const { rows, loading, error } = useAppSelector((state) => state.table);
 
     useEffect(() => {
-        dispatch(fetchRows()); // Fetch rows when the component mounts
-    }, [dispatch]);
+        dispatch(fetchRows({ page: 1, limit: 5 }));
+    }, [dispatch, 1]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -28,8 +28,8 @@ export default function WorldMap() {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {rows.map((country: any) => (
-                    <Marker key={country.code} position={country.latlag}>
+                {rows?.data.map((country: any) => (
+                    <Marker key={country.code} position={[country.lat, country.lng]}>
                         <Popup>
                             <h3>{country.name}</h3>
                             <p>Population: {country.population}</p>
