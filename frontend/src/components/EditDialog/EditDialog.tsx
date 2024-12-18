@@ -16,6 +16,8 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
         name: '',
         code: '',
         description: '',
+        lat: '',
+        lng: '',
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -26,6 +28,8 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
                 name: country.name || '',
                 code: country.code || '',
                 description: country.description || '',
+                lat: country.lat || '',
+                lng: country.lng || '',
             });
         }
     }, [countryId, rows]);
@@ -37,19 +41,12 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
             newErrors.name = 'Name is required';
         }
 
-        if (!formData.code.trim()) {
-            newErrors.code = 'Code is required';
-        } else if (formData.code.length !== 2) {
-            newErrors.code = 'Code must be 2 characters';
-        }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
-        console.log(id, value);
         setFormData(prev => ({
             ...prev,
             [id]: value
@@ -99,7 +96,6 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
                     onChange={handleChange}
                     error={!!errors.code}
                     helperText={errors.code}
-                    inputProps={{ maxLength: 2 }}
                 />
                 <TextField
                     margin="dense"
@@ -107,6 +103,26 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
                     label="Description"
                     fullWidth
                     value={formData.description}
+                    onChange={handleChange}
+                    error={!!errors.population}
+                    helperText={errors.population}
+                />
+                <TextField
+                    margin="dense"
+                    id="lat"
+                    label="Latitude"
+                    fullWidth
+                    value={formData.lat}
+                    onChange={handleChange}
+                    error={!!errors.population}
+                    helperText={errors.population}
+                />
+                <TextField
+                    margin="dense"
+                    id="lng"
+                    label="Longitude"
+                    fullWidth
+                    value={formData.lng}
                     onChange={handleChange}
                     error={!!errors.population}
                     helperText={errors.population}
