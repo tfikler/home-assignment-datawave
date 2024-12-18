@@ -5,13 +5,15 @@ import { Country, PaginatedResponse } from '../types/country.interface';
 interface FetchRowsParams {
     page: number;
     limit: number;
+    search?: string;
 }
 
 export const fetchRows = createAsyncThunk(
     'table/fetchRows',
-    async ({ page, limit }: FetchRowsParams) => {
+    async ({ page, limit, search }: FetchRowsParams) => {
+        const searchParam = search ? `&search=${encodeURIComponent(search)}` : '';
         const response = await axios.get<PaginatedResponse<Country>>(
-            `http://localhost:3000/countries?page=${page}&limit=${limit}`
+            `http://localhost:3000/countries?page=${page}&limit=${limit}${searchParam}`
         );
         return response.data;
     }

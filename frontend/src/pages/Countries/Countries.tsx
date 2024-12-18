@@ -1,41 +1,49 @@
 import './Countries.css';
 import CustomTable from "../../components/CustomTable/CustomTable";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { useCallback, useEffect, useState } from "react";
-import debounce from 'lodash.debounce';
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRows } from "../../slices/countries-slice";
 
 export default function Countries() {
     const dispatch = useAppDispatch();
     const [searchQuery, setSearchQuery] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [page, setPage] = useState(1);
     const { rows, loading, error } = useAppSelector((state) => state.table);
+    const ITEMS_PER_PAGE = 5;
 
+    // Handle the debounced search separately from the input value
     useEffect(() => {
-        dispatch(fetchRows({ page, limit: 5 }));
-    }, [dispatch, page]);
+        const timer = setTimeout(() => {
+            setDebouncedSearch(searchQuery);
+        }, 300);
 
-    const handleSearch = useCallback(
-        debounce((query: string) => {
-            setSearchQuery(query);
-            setPage(1); // Reset to first page when searching
-        }, 300),
-        []
-    );
+        return () => clearTimeout(timer);
+    }, [searchQuery]);
 
-    const filteredData = rows?.data.filter((item) =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    // Only fetch when debounced search or page changes
+    useEffect(() => {
+        dispatch(fetchRows({
+            page,
+            limit: ITEMS_PER_PAGE,
+            search: debouncedSearch
+        }));
+    }, [dispatch, page, debouncedSearch]);
+
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+        setPage(1);
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
     return (
         <div className="content-countries">
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} value={searchQuery}/>
             <CustomTable
-                rows={filteredData || []}
+                rows={rows?.data || []}
                 page={page}
                 totalPages={rows?.meta.lastPage || 1}
                 onPageChange={setPage}

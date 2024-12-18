@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { HttpService } from '@nestjs/axios';
 import { Country } from './countries.model';
 import { firstValueFrom } from 'rxjs';
+import {Op} from "sequelize";
 
 @Injectable()
 export class CountriesService implements OnModuleInit {
@@ -55,12 +56,19 @@ export class CountriesService implements OnModuleInit {
         }
     }
 
-    async findAll(page: number = 1, limit: number = 5) {
+    async findAll(page: number = 1, limit: number = 5, search? : string) {
         if (page === -1){
             return await this.countryModel.findAll();
         }
         const offset = (page - 1) * limit;
+
+        const whereClause = search ? {
+            name: {
+                [Op.like]: `%${search}%`,
+            },
+        } : {};
         const { rows: data, count: total } = await this.countryModel.findAndCountAll({
+            where: whereClause,
             offset,
             limit,
             order: [['name', 'ASC']],

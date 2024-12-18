@@ -10,10 +10,11 @@ export class CountriesController {
     async findAll(
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 5,
+        @Query('search') search?: string,
     ) {
-        const pageNumber = Number(page) || 1; // Default to page 1 if invalid
-        const pageSize = Number(limit) || 5; // Default to 7 items per page
-        return this.countriesService.findAll(pageNumber, pageSize);
+        const pageNumber = Number(page) || 1;
+        const pageSize = Number(limit) || 5;
+        return this.countriesService.findAll(pageNumber, pageSize, search);
     }
 
     @Get(':id')
