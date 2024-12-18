@@ -45,11 +45,12 @@ export default function WorldMap() {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {countries.map((country: any) => (
+                    console.log(country),
                     <Marker key={country.code} position={[country.lat, country.lng]} icon={createFlagIcon(country.flag)}>
                         <Popup>
                             <h3>{country.name}</h3>
-                            <p>Population: {country.population}</p>
-                            <p>Size: {country.size}</p>
+                            <p>{country.code}</p>
+                            <p>{country.description}</p>
                         </Popup>
                     </Marker>
                 ))}

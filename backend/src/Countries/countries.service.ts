@@ -39,6 +39,7 @@ export class CountriesService implements OnModuleInit {
                     flag: country.flags?.png || null,
                     lat: country.latlng?.[0] || null,
                     lng: country.latlng?.[1] || null,
+                    description: null,
                 }));
 
             if (newCountries.length > 0) {

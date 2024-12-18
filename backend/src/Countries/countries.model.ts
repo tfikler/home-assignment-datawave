@@ -19,4 +19,7 @@ export class Country extends Model {
 
     @Column
     lng: number;
+
+    @Column
+    description: string;
 }

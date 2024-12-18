@@ -15,9 +15,7 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
     const [formData, setFormData] = useState({
         name: '',
         code: '',
-        population: '',
-        size: '',
-        density: ''
+        description: '',
     });
     const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -27,9 +25,7 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
             setFormData({
                 name: country.name || '',
                 code: country.code || '',
-                population: country.population?.toString() || '',
-                size: country.size?.toString() || '',
-                density: country.density?.toString() || ''
+                description: country.description || '',
             });
         }
     }, [countryId, rows]);
@@ -47,20 +43,13 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
             newErrors.code = 'Code must be 2 characters';
         }
 
-        if (formData.population && Number(formData.population) < 0) {
-            newErrors.population = 'Population cannot be negative';
-        }
-
-        if (formData.size && Number(formData.size) < 0) {
-            newErrors.size = 'Size cannot be negative';
-        }
-
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
+        console.log(id, value);
         setFormData(prev => ({
             ...prev,
             [id]: value
@@ -78,11 +67,7 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
         if (validateForm()) {
             const payload = {
                 ...formData,
-                population: formData.population ? Number(formData.population) : undefined,
-                size: formData.size ? Number(formData.size) : undefined,
-                density: formData.density ? Number(formData.density) : undefined,
             };
-            console.log('Save', payload);
             dispatch(updateCountry({ id: countryId, data: payload }));
             handleClose();
         }
@@ -118,36 +103,13 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
                 />
                 <TextField
                     margin="dense"
-                    id="population"
-                    label="Population"
-                    type="number"
+                    id="description"
+                    label="Description"
                     fullWidth
-                    value={formData.population}
+                    value={formData.description}
                     onChange={handleChange}
                     error={!!errors.population}
                     helperText={errors.population}
-                />
-                <TextField
-                    margin="dense"
-                    id="size"
-                    label="Size"
-                    type="number"
-                    fullWidth
-                    value={formData.size}
-                    onChange={handleChange}
-                    error={!!errors.size}
-                    helperText={errors.size}
-                />
-                <TextField
-                    margin="dense"
-                    id="density"
-                    label="Density"
-                    type="number"
-                    fullWidth
-                    value={formData.density}
-                    onChange={handleChange}
-                    error={!!errors.density}
-                    helperText={errors.density}
                 />
             </DialogContent>
             <DialogActions>
