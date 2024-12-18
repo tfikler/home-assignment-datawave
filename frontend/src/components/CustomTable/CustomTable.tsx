@@ -21,21 +21,8 @@ export default function CustomTable({ rows, page, totalPages, onPageChange }: Cu
 
     const columns = [
         { id: 'name', label: 'Name', minWidth: 150 },
-        { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-        {
-            id: 'population',
-            label: 'Population',
-            minWidth: 150,
-            align: 'center',
-            format: (value: number) => value?.toLocaleString('en-US'),
-        },
-        {
-            id: 'size',
-            label: 'Size\u00a0(km\u00b2)',
-            minWidth: 150,
-            align: 'center',
-            format: (value: number) => value?.toLocaleString('en-US'),
-        }
+        { id: 'code', label: 'Code', minWidth: 100 },
+        { id: 'flag', label: 'Flag', minWidth: 100 },
     ];
 
     const handleDelete = async (id: number) => {
@@ -67,11 +54,19 @@ export default function CustomTable({ rows, page, totalPages, onPageChange }: Cu
                             <TableRow hover tabIndex={-1} key={row.id}>
                                 {columns.map((column) => {
                                     const value = row[column.id as keyof Country];
+                                    let string_value = value as string;
                                     return (
                                         <TableCell key={column.id}>
-                                            {column.format && typeof value === 'number'
-                                                ? column.format(value)
-                                                : value}
+                                            {column.id === 'flag' ? (
+                                                <img
+                                                    src={string_value}
+                                                    alt="flag"
+                                                    className="flag"
+                                                    style={{ width: 30, height: 20 }}
+                                                />
+                                            ) : (
+                                                string_value
+                                            )}
                                         </TableCell>
                                     );
                                 })}
