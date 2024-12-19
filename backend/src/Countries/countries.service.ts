@@ -56,14 +56,14 @@ export class CountriesService implements OnModuleInit {
         }
     }
 
-    async findAll(page: number = 1, limit: number = 5, search? : string) {
+    async findAll(page: number = 1, limit: number = 5, search? : string, filterBy? : string) {
         if (page === -1){
             return await this.countryModel.findAll();
         }
         const offset = (page - 1) * limit;
 
         const whereClause = search ? {
-            name: {
+            [filterBy]: {
                 [Op.like]: `%${search}%`,
             },
         } : {};

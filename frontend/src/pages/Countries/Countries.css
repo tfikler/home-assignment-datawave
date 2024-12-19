@@ -30,3 +30,8 @@
     align-items: center;
     flex-direction: row;
 }
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}

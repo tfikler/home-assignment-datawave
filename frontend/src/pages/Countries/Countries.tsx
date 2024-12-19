@@ -4,12 +4,14 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRows } from "../../slices/countries-slice";
+import Filter from "../../components/Filter/Filter.tsx";
 
 export default function Countries() {
     const dispatch = useAppDispatch();
     const [searchQuery, setSearchQuery] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
     const [page, setPage] = useState(1);
+    const [searchFilter, setSearchFilter] = useState('name');
     const { rows, loading, error } = useAppSelector((state) => state.table);
     const ITEMS_PER_PAGE = 5;
 
@@ -27,13 +29,19 @@ export default function Countries() {
         dispatch(fetchRows({
             page,
             limit: ITEMS_PER_PAGE,
-            search: debouncedSearch
+            search: debouncedSearch,
+            filterBy: searchFilter
         }));
-    }, [dispatch, page, debouncedSearch]);
+    }, [dispatch, page, debouncedSearch, searchFilter]);
 
     const handleSearch = (query: string) => {
         setSearchQuery(query);
         setPage(1);
+    };
+
+    const handleFilterChange = (filterType: string) => {
+        setSearchFilter(filterType);
+        setPage(1); // Reset page when filter changes
     };
 
     if (loading) return <p>Loading...</p>;
@@ -41,7 +49,10 @@ export default function Countries() {
 
     return (
         <div className="content-countries">
-            <SearchBar onSearch={handleSearch} value={searchQuery}/>
+            <div className="search-container">
+                <SearchBar onSearch={handleSearch} value={searchQuery}/>
+                <Filter onFilterChange={handleFilterChange} currentFilter={searchFilter}/>
+            </div>
             <CustomTable
                 rows={rows?.data || []}
                 page={page}

@@ -1,10 +1,9 @@
 //styles
 import './SearchBar.css';
 import {useEffect, useRef} from "react";
-import Filter from "../Filter/Filter";
 
 
-export default function SearchBar({ onSearch, value } : { onSearch: (search: string) => void, value: string }) {
+export default function SearchBar({ onSearch, value } : { onSearch: (search: string) => void, value: string}) {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -23,7 +22,6 @@ export default function SearchBar({ onSearch, value } : { onSearch: (search: str
                 value={value}
                 style={{width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #fff', color: 'black', height: '30px'}}
             />
-            <Filter />
         </div>
     );
 }

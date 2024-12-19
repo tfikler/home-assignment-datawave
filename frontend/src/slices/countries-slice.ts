@@ -6,14 +6,16 @@ interface FetchRowsParams {
     page: number;
     limit: number;
     search?: string;
+    filterBy?: string;
 }
 
 export const fetchRows = createAsyncThunk(
     'table/fetchRows',
-    async ({ page, limit, search }: FetchRowsParams) => {
+    async ({ page, limit, search, filterBy }: FetchRowsParams) => {
         const searchParam = search ? `&search=${encodeURIComponent(search)}` : '';
+        const filterParam = filterBy ? `&filterBy=${filterBy}` : '';
         const response = await axios.get<PaginatedResponse<Country>>(
-            `http://localhost:3000/countries?page=${page}&limit=${limit}${searchParam}`
+            `http://localhost:3000/countries?page=${page}&limit=${limit}${searchParam}${filterParam}`
         );
         return response.data;
     }

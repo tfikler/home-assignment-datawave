@@ -11,10 +11,11 @@ export class CountriesController {
         @Query('page') page: number = 1,
         @Query('limit') limit: number = 5,
         @Query('search') search?: string,
+        @Query('filterBy') filterBy?: string
     ) {
         const pageNumber = Number(page) || 1;
         const pageSize = Number(limit) || 5;
-        return this.countriesService.findAll(pageNumber, pageSize, search);
+        return this.countriesService.findAll(pageNumber, pageSize, search, filterBy);
     }
 
     @Get(':id')
