@@ -17,24 +17,8 @@ html, body, #root {
     grid-area: main;
     padding: 20px;
     overflow-x: auto;
-    /* center the content */
     display: flex;
     justify-content: center;
     align-items: center;
 
-}
-
-/* For very small screens, stack the layout */
-@media (max-width: 576px) {
-    .layout {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "sidebar"
-            "main";
-    }
-
-    .sidebar {
-        height: auto;
-        min-height: min-content;
-    }
 }

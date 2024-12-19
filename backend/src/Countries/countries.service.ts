@@ -19,6 +19,7 @@ export class CountriesService implements OnModuleInit {
         await this.initializeDatabase();
     }
 
+    // This method fetches country data from the REST Countries API and initializes the database with it.
     async initializeDatabase() {
         const apiUrl = 'http://restcountries.com:8080/v3.1/all';
         try {
@@ -27,11 +28,9 @@ export class CountriesService implements OnModuleInit {
                 this.httpService.get(apiUrl, { timeout: 30000 }),
             );
 
-            // Get all existing countries from database
             const existingCountries = await this.countryModel.findAll();
             const existingCountryNames = new Set(existingCountries.map(country => country.name));
 
-            // Filter out countries that already exist
             const newCountries = response.data
                 .filter((country: any) => !existingCountryNames.has(country.name.common))
                 .map((country: any) => ({
@@ -56,6 +55,8 @@ export class CountriesService implements OnModuleInit {
         }
     }
 
+
+    // Finding all countries with pagination, search, and filter options
     async findAll(page: number = 1, limit: number = 5, search? : string, filterBy? : string) {
         if (page === -1){
             return await this.countryModel.findAll();
@@ -85,10 +86,12 @@ export class CountriesService implements OnModuleInit {
         };
     }
 
+    // Finding a single country by ID
     async findOne(id: number): Promise<Country> {
         return this.countryModel.findByPk(id);
     }
 
+    // Updating a country by ID
     async update(id: number, countryData: Partial<Country>): Promise<Country> {
         const country = await this.findOne(id);
         if (!country) {
@@ -97,6 +100,7 @@ export class CountriesService implements OnModuleInit {
         return country.update(countryData);
     }
 
+    // Deleting a country by ID
     async delete(id: number): Promise<void> {
         const country = await this.findOne(id);
         if (country) {

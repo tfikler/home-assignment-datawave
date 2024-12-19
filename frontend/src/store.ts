@@ -8,11 +8,9 @@ const store = configureStore({
     },
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-// Custom hooks for use in components
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: <TSelected>(selector: (state: RootState) => TSelected) => TSelected = useSelector;
 

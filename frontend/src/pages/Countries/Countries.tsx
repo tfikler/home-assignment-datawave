@@ -1,10 +1,16 @@
+//styles
 import './Countries.css';
+
+//components
 import CustomTable from "../../components/CustomTable/CustomTable";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import Filter from "../../components/Filter/Filter.tsx";
+
+//react/redux
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRows } from "../../slices/countries-slice";
-import Filter from "../../components/Filter/Filter.tsx";
+
 
 export default function Countries() {
     const dispatch = useAppDispatch();
@@ -13,9 +19,10 @@ export default function Countries() {
     const [page, setPage] = useState(1);
     const [searchFilter, setSearchFilter] = useState('name');
     const { rows, loading, error } = useAppSelector((state) => state.table);
+
+
     const ITEMS_PER_PAGE = 5;
 
-    // Handle the debounced search separately from the input value
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearch(searchQuery);
@@ -24,7 +31,6 @@ export default function Countries() {
         return () => clearTimeout(timer);
     }, [searchQuery]);
 
-    // Only fetch when debounced search or page changes
     useEffect(() => {
         dispatch(fetchRows({
             page,
@@ -32,7 +38,7 @@ export default function Countries() {
             search: debouncedSearch,
             filterBy: searchFilter
         }));
-    }, [dispatch, page, debouncedSearch, searchFilter]);
+    }, [page, debouncedSearch, searchFilter]);
 
     const handleSearch = (query: string) => {
         setSearchQuery(query);
@@ -41,7 +47,7 @@ export default function Countries() {
 
     const handleFilterChange = (filterType: string) => {
         setSearchFilter(filterType);
-        setPage(1); // Reset page when filter changes
+        setPage(1);
     };
 
     if (loading) return <p>Loading...</p>;

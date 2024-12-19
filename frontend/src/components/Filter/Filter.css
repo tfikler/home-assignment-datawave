@@ -29,16 +29,3 @@
 .options:focus {
     outline: none;
 }
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .search-container {
-        flex-direction: column;
-        padding: 0.75rem;
-    }
-
-    .filter {
-        width: 100%;
-        min-width: unset;
-    }
-}

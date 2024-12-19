@@ -51,7 +51,6 @@ button.success {
   background-color: var(--success-color);
 }
 
-/* Enhanced link styles */
 a {
   color: var(--primary-color);
   text-decoration: none;
@@ -60,36 +59,4 @@ a {
 
 a:hover {
   color: var(--primary-hover);
-}
-
-/* Table enhancements */
-.table-container {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  margin: 1rem 0;
-}
-
-/* Form controls */
-input, select, textarea {
-  padding: 0.5rem;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  font-size: 0.9rem;
-  transition: border-color 0.2s ease;
-}
-
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-}
-
-/* Card styles */
-.card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
 }

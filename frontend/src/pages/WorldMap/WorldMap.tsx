@@ -1,10 +1,14 @@
-import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet'
-
 //styles
 import './WorldMap.css';
+
+//react
 import {useAppDispatch, useAppSelector} from "../../store.ts";
 import {useEffect} from "react";
 import {fetchAllCountries} from "../../slices/countries-slice.ts";
+
+
+//react-leaflet
+import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet'
 import {divIcon} from "leaflet";
 
 
@@ -19,7 +23,6 @@ export default function WorldMap() {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
-    // Access the data property of rows and filter out countries with no coordinates
     const countries = allCountries?.filter((country: any) =>
         country.lat !== null &&
         country.lng !== null
@@ -37,15 +40,14 @@ export default function WorldMap() {
     return (
         <div id="map">
             <MapContainer center={[50,0]} zoom={1.5} scrollWheelZoom={true} worldCopyJump={false} maxBounds={[
-                [-80, -180], // Southwest corner (latitude, longitude)
-                [80, 180],   // Northeast corner (latitude, longitude)
+                [-80, -180],
+                [80, 180],
             ]}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 {countries.map((country: any) => (
-                    console.log(country),
                     <Marker key={country.code} position={[country.lat, country.lng]} icon={createFlagIcon(country.flag)}>
                         <Popup>
                             <h3>{country.name}</h3>

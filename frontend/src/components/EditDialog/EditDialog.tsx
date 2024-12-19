@@ -1,25 +1,31 @@
-import {useEffect, useState} from "react";
+//material ui
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
+
+//react/redux
+import React, {useEffect, useState} from "react";
 import {updateCountry} from "../../slices/countries-slice.ts";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
+import {useAppDispatch} from "../../store.ts";
 
 interface EditDialogProps {
     open: boolean;
     handleClose: () => void;
-    countryId: number;  // Changed from row_index to countryId
+    countryId: number;
 }
 
 export default function EditDialog({open, handleClose, countryId}: EditDialogProps) {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const rows = useSelector((state: any) => state.table.rows || []);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
     const [formData, setFormData] = useState({
         name: '',
         code: '',
         description: '',
-        lat: '',
-        lng: '',
+        lat: 0,
+        lng: 0,
     });
-    const [errors, setErrors] = useState<Record<string, string>>({});
+
 
     useEffect(() => {
         const country = rows.data.find((row: any) => row.id === countryId);
@@ -28,8 +34,8 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
                 name: country.name || '',
                 code: country.code || '',
                 description: country.description || '',
-                lat: country.lat || '',
-                lng: country.lng || '',
+                lat: country.lat || 0,
+                lng: country.lng || 0,
             });
         }
     }, [countryId, rows]);
@@ -49,9 +55,9 @@ export default function EditDialog({open, handleClose, countryId}: EditDialogPro
         const { id, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [id]: value
+            [id]: id === 'lat' || id === 'lng' ? parseFloat(value) : value
         }));
-        // Clear error when field is modified
+
         if (errors[id]) {
             setErrors(prev => ({
                 ...prev,

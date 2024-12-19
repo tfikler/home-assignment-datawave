@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\""
+    "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\"",
+    "install-all": "cd backend && npm install && cd ../frontend && npm install"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",

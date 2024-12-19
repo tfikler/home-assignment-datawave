@@ -1,7 +1,13 @@
+//styles
 import './CustomTable.css';
+
+//material ui
 import { Table, Paper, TableBody, TableContainer, TableHead, TableRow, TableCell, Pagination } from '@mui/material';
-// import { useState } from "react";
+
+//components
 import EditDialog from "../EditDialog/EditDialog";
+
+//redux/react
 import { deleteCountry, fetchRows } from "../../slices/countries-slice";
 import { useDispatch } from "react-redux";
 import { Country } from '../../types/country.interface';

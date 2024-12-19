@@ -1,5 +1,7 @@
-// Filter.tsx
+//styles
 import './Filter.css';
+
+//react
 import { useRef } from "react";
 
 interface FilterProps {

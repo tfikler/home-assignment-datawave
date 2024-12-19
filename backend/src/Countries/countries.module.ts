@@ -7,8 +7,8 @@ import { CountriesController } from './countries.controller';
 
 @Module({
     imports: [
-        SequelizeModule.forFeature([Country]), // Register the Country model
-        HttpModule, // Register the HTTP module
+        SequelizeModule.forFeature([Country]),
+        HttpModule,
     ],
     controllers: [CountriesController],
     providers: [CountriesService],
