@@ -20,7 +20,7 @@ export default function SearchBar({ onSearch, value } : { onSearch: (search: str
                 placeholder="Search for a country"
                 onChange={(e) => onSearch(e.target.value)}
                 value={value}
-                style={{width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: '1px solid #fff', color: 'black', height: '30px'}}
+                style={{width: '100%', backgroundColor: 'transparent', border: 'none', borderBottom: 'none', color: 'black', height: '30px', outline: 'none'}}
             />
         </div>
     );
