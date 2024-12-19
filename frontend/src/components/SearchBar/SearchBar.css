@@ -1,8 +1,32 @@
-.search-bar{
+.search-bar {
+    flex: 1;
     display: flex;
-    justify-content: center;
     align-items: center;
-    background: white;
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+}
+
+.search-bar:focus-within {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.search-bar input {
     width: 100%;
-    color: black;
+    border: none;
+    background: transparent;
+    padding: 0.5rem;
+    font-size: 0.95rem;
+    color: #2c3e50;
+}
+
+.search-bar input:focus {
+    outline: none;
+}
+
+.search-bar input::placeholder {
+    color: #94a3b8;
 }
