@@ -17,7 +17,7 @@ export default function Countries() {
     useEffect(() => {
         const timer = setTimeout(() => {
             setDebouncedSearch(searchQuery);
-        }, 300);
+        }, 700);
 
         return () => clearTimeout(timer);
     }, [searchQuery]);
