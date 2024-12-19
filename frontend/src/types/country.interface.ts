@@ -21,4 +21,4 @@ export interface PaginatedResponse<T> {
 window.addEventListener('resize', () => {
     ITEMS_PER_PAGE = window.innerWidth < 1300 ? 5 : 8;
 });
-export let ITEMS_PER_PAGE = window.innerWidth < 1300 ? 5 : 8;
+export let ITEMS_PER_PAGE = window.innerWidth < 1300 ? 3 : 8;

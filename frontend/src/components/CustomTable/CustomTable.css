@@ -40,11 +40,13 @@
 
 .edit-button {
     background-color: #4a90e2;
+    width: 35%;
     color: white;
 }
 
 .delete-button {
     background-color: #e74c3c;
+    width: 35%;
     color: white;
 }
 
