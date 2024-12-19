@@ -11,6 +11,9 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { fetchRows } from "../../slices/countries-slice";
 
+//constants
+import { ITEMS_PER_PAGE } from "../../types/country.interface";
+
 
 export default function Countries() {
     const dispatch = useAppDispatch();
@@ -19,9 +22,6 @@ export default function Countries() {
     const [page, setPage] = useState(1);
     const [searchFilter, setSearchFilter] = useState('name');
     const { rows, loading, error } = useAppSelector((state) => state.table);
-
-
-    const ITEMS_PER_PAGE = 5;
 
     useEffect(() => {
         const timer = setTimeout(() => {

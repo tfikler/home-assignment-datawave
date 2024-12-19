@@ -17,3 +17,8 @@ export interface PaginatedResponse<T> {
         limit: number;
     };
 }
+
+window.addEventListener('resize', () => {
+    ITEMS_PER_PAGE = window.innerWidth < 1300 ? 5 : 8;
+});
+export let ITEMS_PER_PAGE = window.innerWidth < 1300 ? 5 : 8;

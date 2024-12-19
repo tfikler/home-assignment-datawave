@@ -20,6 +20,8 @@ interface CustomTableProps {
     onPageChange: (page: number) => void;
 }
 
+import {ITEMS_PER_PAGE} from "../../types/country.interface";
+
 export default function CustomTable({ rows, page, totalPages, onPageChange }: CustomTableProps) {
     const dispatch = useDispatch();
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -33,7 +35,7 @@ export default function CustomTable({ rows, page, totalPages, onPageChange }: Cu
 
     const handleDelete = async (id: number) => {
         await dispatch(deleteCountry(id) as any);
-        dispatch(fetchRows({ page, limit: 5 }) as any);
+        dispatch(fetchRows({ page, limit: ITEMS_PER_PAGE }) as any);
     };
 
     return (
